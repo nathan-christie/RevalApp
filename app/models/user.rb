@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
-
-	has_and_belongs_to_many :followers, class_name: 'User', foreign_key: 'user_id', :join_table => :users_subscriptions, :dependant => :destroy
+	has_many :subscriptions, foreign_key: 'user_id', :dependent => :destroy
+	has_many :followers, class_name: 'User', foreign_key: 'follower_id', :through => :subscriptions
 	has_and_belongs_to_many :following, class_name: 'User', foreign_key: 'follower_id', :join_table => :users_subscriptions, :dependant => :destroy
 
 	def follow( user_id )

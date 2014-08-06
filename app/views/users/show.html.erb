@@ -17,7 +17,7 @@
     <% @user.following.each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td><%= link_to 'Show', user %></td>
+        <td><button onclick="subscribe( '<%= unfollow_user_path(@user.id, user.id) %>' )">Unfollow</button></td>
       </tr>
     <% end %>
   </tbody>
@@ -53,7 +53,7 @@
     <% ((User.all - [@user]) - @user.following).each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td><%= link_to 'Show', user %></td>
+        <td><button onclick="subscribe( '<%= follow_user_path(@user.id, user.id) %>' )">Follow</button></td>
       </tr>
     <% end %>
   </tbody>
@@ -61,3 +61,18 @@
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
+<script>
+function subscribe(url)
+{
+	$.ajax({
+	  		type: "POST",
+	  		url: url
+	  	})
+	  	.done(function() {
+	    	alert( "success" );
+	  	})
+	  	.fail(function() {
+	    	alert( "Failure!" );
+  	});
+}
+</script>

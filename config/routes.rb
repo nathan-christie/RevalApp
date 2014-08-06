@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :users
+  resources :users do
+    member do
+      get 'follow/:follow_id' => 'users#follow', as: :follow
+      get 'unfollow/:follow_id' => 'users#unfollow', as: :unfollow
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :follow, :unfollow]
 
   # GET /users
   # GET /users.json
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to :users, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -50,6 +50,26 @@ class UsersController < ApplicationController
       end
     end
   end
+
+
+  # POST /users/1/follow/1
+  def follow
+    followed = User.find(params[:follow_id])
+    if followed && @user
+      @user.follow(followed.id)
+    end
+    render json: @user.followers
+  end
+
+  # POST /users/1/unfollow/1
+  def unfollow
+    followed = User.find(params[:follow_id])
+    if followed && @user
+      @user.unfollow(followed.id)
+    end
+    render json: @user.followers
+  end
+
 
   # DELETE /users/1
   # DELETE /users/1.json
